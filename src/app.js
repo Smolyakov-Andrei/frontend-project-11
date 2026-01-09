@@ -62,14 +62,14 @@ export default () => {
 
   const loadRss = (url) => {
     const proxyUrl = getProxyUrl(url)
-    return axios.get(proxyUrl).then(response => parse(response.data.contents))
+    return axios.get(proxyUrl).then((response) => parse(response.data.contents))
   }
 
   const checkForUpdates = () => {
     const promises = state.feeds.map((feed) => loadRss(feed.url)
       .then(({ posts }) => {
-        const existingPostTitles = new Set(state.posts.map(p => p.title))
-        const newPosts = posts.filter(p => !existingPostTitles.has(p.title))
+        const existingPostTitles = new Set(state.posts.map((p) => p.title))
+        const newPosts = posts.filter((p) => !existingPostTitles.has(p.title))
         if (newPosts.length > 0) {
           const postsWithIds = newPosts.map((post) => ({
             id: crypto.randomUUID(),
@@ -79,7 +79,7 @@ export default () => {
           watchedState.posts.unshift(...postsWithIds)
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(`Ошибка при обновлении фида ${feed.url}:`, err)
       }))
 
@@ -88,7 +88,7 @@ export default () => {
     })
   }
 
-  elements.form.addEventListener('submit', e => {
+  elements.form.addEventListener('submit', (e) => {
     e.preventDefault()
     const formData = new FormData(e.target)
     const url = formData.get('url').trim()
@@ -99,7 +99,7 @@ export default () => {
       .then(({ feed, posts }) => {
         const feedId = crypto.randomUUID()
         watchedState.feeds.unshift({ id: feedId, url, ...feed })
-        const postsWithIds = posts.map(post => ({ id: crypto.randomUUID(), feedId, ...post }))
+        const postsWithIds = posts.map((post) => ({ id: crypto.randomUUID(), feedId, ...post }))
         watchedState.posts.unshift(...postsWithIds)
         watchedState.rssForm.status = 'success'
       })
@@ -115,7 +115,7 @@ export default () => {
       })
   })
 
-  elements.postsContainer.addEventListener('click', e => {
+  elements.postsContainer.addEventListener('click', (e) => {
     const { id } = e.target.dataset
     if (!id) return
 
