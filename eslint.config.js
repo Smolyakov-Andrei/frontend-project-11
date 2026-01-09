@@ -22,6 +22,8 @@ export default [
       '@stylistic/brace-style': ['error', '1tbs'],
       '@stylistic/quotes': ['error', 'single'],
       '@stylistic/comma-dangle': ['error', 'always-multiline'],
+      '@stylistic/no-multiple-empty-lines': ['error', { max: 1 }],
+
       'no-console': 0,
       'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     },
