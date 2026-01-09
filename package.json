@@ -6,10 +6,16 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "test": "npx playwright test"
+    "preview": "vite preview"
   },
   "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-import-resolver-node": "^0.3.9",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jest": "^29.12.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.1.1",
     "vite": "^7.2.4"
   },
   "dependencies": {
@@ -17,7 +23,6 @@
     "bootstrap": "^5.3.8",
     "i18next": "^25.7.4",
     "on-change": "^6.0.1",
-    "uniqid": "^5.4.0",
     "yup": "^1.7.1"
   }
 }
