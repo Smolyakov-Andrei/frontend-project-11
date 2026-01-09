@@ -75,11 +75,9 @@ const renderPosts = (elements, state, i18nInstance) => {
 
     const a = document.createElement('a')
     a.setAttribute('href', post.link)
-
     const isViewed = viewedPostIds.has(post.id)
     a.classList.add(isViewed ? 'fw-normal' : 'fw-bold')
     if (isViewed) a.classList.add('link-secondary')
-
     a.dataset.id = post.id
     a.setAttribute('target', '_blank')
     a.setAttribute('rel', 'noopener noreferrer')

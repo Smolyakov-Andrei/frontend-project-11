@@ -16,15 +16,12 @@ export default [
       },
     },
     rules: {
-
       '@stylistic/semi': ['error', 'never'],
       '@stylistic/no-trailing-spaces': 'error',
-      '@stylistic/arrow-parens': ['error', 'always'],
+      '@stylistic/arrow-parens': ['error', 'as-needed'],
       '@stylistic/brace-style': ['error', '1tbs'],
       '@stylistic/quotes': ['error', 'single'],
       '@stylistic/comma-dangle': ['error', 'always-multiline'],
-
-
       'no-console': 0,
       'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     },

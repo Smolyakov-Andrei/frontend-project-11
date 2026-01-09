@@ -72,7 +72,11 @@ export default () => {
         const newPosts = posts.filter((p) => !existingPostTitles.has(p.title))
 
         if (newPosts.length > 0) {
-          const postsWithIds = newPosts.map((post) => ({ id: crypto.randomUUID(), feedId: feed.id, ...post }))
+          const postsWithIds = newPosts.map((post) => ({
+            id: crypto.randomUUID(),
+            feedId: feed.id,
+            ...post,
+          }))
           watchedState.posts.unshift(...postsWithIds)
         }
       })
@@ -114,13 +118,13 @@ export default () => {
   })
 
   elements.postsContainer.addEventListener('click', (e) => {
-    const postId = e.target.dataset.id
-    if (!postId) return
+    const { id } = e.target.dataset
+    if (!id) return
 
-    watchedState.ui.viewedPostIds.add(postId)
+    watchedState.ui.viewedPostIds.add(id)
 
     if (e.target.tagName === 'BUTTON') {
-      watchedState.ui.modalPostId = postId
+      watchedState.ui.modalPostId = id
     }
   })
 
