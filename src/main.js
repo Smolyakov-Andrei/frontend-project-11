@@ -1,4 +1,5 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
+// src/main.js
+import './index.css';
 import 'bootstrap';
 import app from './app.js';
 
