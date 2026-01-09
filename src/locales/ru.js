@@ -1,4 +1,3 @@
-// src/locales/ru.js
 export default {
   translation: {
     success: 'RSS успешно загружен',
@@ -6,8 +5,8 @@ export default {
       invalidUrl: 'Ссылка должна быть валидным URL',
       duplicateUrl: 'RSS уже существует',
       notEmpty: 'Не должно быть пустым',
-      networkError: 'Ошибка сети. Попробуйте еще раз.',
       parseError: 'Ресурс не содержит валидный RSS',
+      networkError: 'Ошибка сети',
     },
     ui: {
       mainTitle: 'RSS агрегатор',
@@ -17,6 +16,7 @@ export default {
       example: 'Пример: https://ru.hexlet.io/lessons.rss',
       postsTitle: 'Посты',
       feedsTitle: 'Фиды',
+      viewButton: 'Просмотр',
       modalReadButton: 'Читать полностью',
       modalCloseButton: 'Закрыть',
     },

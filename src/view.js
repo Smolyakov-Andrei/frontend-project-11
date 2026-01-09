@@ -50,21 +50,41 @@ const renderFeeds = (elements, feeds) => {
   });
 };
 
+const renderModal = (elements, state) => {
+  const { modalTitle, modalBody, modalReadButton } = elements;
+  const postId = state.ui.modalPostId;
+  if (!postId) return;
+
+  const post = state.posts.find((p) => p.id === postId);
+  if (!post) return;
+
+  modalTitle.textContent = post.title;
+  modalBody.textContent = post.description;
+  modalReadButton.href = post.link;
+};
+
 const renderPosts = (elements, state, i18nInstance) => {
   const { postsContainer } = elements;
-  const { posts } = state;
+  const { posts, ui: { viewedPostIds } } = state;
   const list = postsContainer.querySelector('ul');
   list.innerHTML = '';
+
   posts.forEach((post) => {
     const li = document.createElement('li');
     li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
+    
     const a = document.createElement('a');
     a.setAttribute('href', post.link);
-    a.classList.add('fw-bold');
+
+    const isViewed = viewedPostIds.has(post.id);
+    a.classList.add(isViewed ? 'fw-normal' : 'fw-bold');
+    if (isViewed) a.classList.add('link-secondary');
+    
     a.dataset.id = post.id;
     a.setAttribute('target', '_blank');
     a.setAttribute('rel', 'noopener noreferrer');
     a.textContent = post.title;
+    
     const button = document.createElement('button');
     button.setAttribute('type', 'button');
     button.classList.add('btn', 'btn-outline-primary', 'btn-sm');
@@ -72,6 +92,7 @@ const renderPosts = (elements, state, i18nInstance) => {
     button.dataset.bsToggle = 'modal';
     button.dataset.bsTarget = '#modal';
     button.textContent = i18nInstance.t('ui.viewButton', 'Просмотр');
+
     li.append(a, button);
     list.append(li);
   });
@@ -87,7 +108,11 @@ export default (state, elements, i18nInstance) => (path, value) => {
       renderFeeds(elements, value);
       break;
     case 'posts':
+    case 'ui.viewedPostIds':
       renderPosts(elements, state, i18nInstance);
+      break;
+    case 'ui.modalPostId':
+      renderModal(elements, state);
       break;
     default:
       break;

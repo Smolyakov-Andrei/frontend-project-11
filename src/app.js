@@ -19,6 +19,10 @@ export default () => {
     rssForm: { status: 'filling', error: null },
     feeds: [],
     posts: [],
+    ui: {
+      viewedPostIds: new Set(),
+      modalPostId: null,
+    },
   };
 
   const elements = {
@@ -28,6 +32,10 @@ export default () => {
     feedback: document.querySelector('.feedback'),
     postsContainer: document.querySelector('.posts'),
     feedsContainer: document.querySelector('.feeds'),
+    modal: document.getElementById('modal'),
+    modalTitle: document.querySelector('.modal-title'),
+    modalBody: document.querySelector('.modal-body'),
+    modalReadButton: document.querySelector('.full-article'),
   };
 
   const watchedState = onChange(state, createView(state, elements, i18nInstance));
@@ -39,7 +47,7 @@ export default () => {
   document.querySelector('.text-body-secondary').textContent = i18nInstance.t('ui.example');
   document.querySelector('.posts .card-title').textContent = i18nInstance.t('ui.postsTitle');
   document.querySelector('.feeds .card-title').textContent = i18nInstance.t('ui.feedsTitle');
-  document.querySelector('.full-article').textContent = i18nInstance.t('ui.modalReadButton');
+  elements.modalReadButton.textContent = i18nInstance.t('ui.modalReadButton');
   document.querySelector('.modal-footer .btn-secondary').textContent = i18nInstance.t('ui.modalCloseButton');
   
   const validateUrl = (url, existingUrls) => {
@@ -51,12 +59,32 @@ export default () => {
     return schema.validate(url);
   };
   
-const loadRss = (url) => {
-  const proxyUrl = getProxyUrl(url);
-  return axios.get(proxyUrl).then((response) => {
-    return parse(response.data.contents);
-  });
-};
+  const loadRss = (url) => {
+    const proxyUrl = getProxyUrl(url);
+    return axios.get(proxyUrl).then((response) => parse(response.data.contents));
+  };
+
+  const checkForUpdates = () => {
+    const promises = state.feeds.map((feed) => {
+      return loadRss(feed.url)
+        .then(({ posts }) => {
+          const existingPostTitles = new Set(state.posts.map((p) => p.title));
+          const newPosts = posts.filter((p) => !existingPostTitles.has(p.title));
+
+          if (newPosts.length > 0) {
+            const postsWithIds = newPosts.map((post) => ({ id: crypto.randomUUID(), feedId: feed.id, ...post }));
+            watchedState.posts.unshift(...postsWithIds);
+          }
+        })
+        .catch((err) => {
+          console.error(`Ошибка при обновлении фида ${feed.url}:`, err);
+        });
+    });
+
+    Promise.all(promises).finally(() => {
+      setTimeout(checkForUpdates, 5000);
+    });
+  };
   
   elements.form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -74,8 +102,7 @@ const loadRss = (url) => {
         watchedState.posts.unshift(...postsWithIds);
         watchedState.rssForm.status = 'success';
       })
-.catch((err) => {
-        
+      .catch((err) => {
         if (err.isAxiosError) {
           watchedState.rssForm.error = 'errors.networkError';
         } else if (err.isParseError) {
@@ -86,4 +113,17 @@ const loadRss = (url) => {
         watchedState.rssForm.status = 'error';
       });
   });
+
+  elements.postsContainer.addEventListener('click', (e) => {
+    const postId = e.target.dataset.id;
+    if (!postId) return;
+
+    watchedState.ui.viewedPostIds.add(postId);
+    
+    if (e.target.tagName === 'BUTTON') {
+      watchedState.ui.modalPostId = postId;
+    }
+  });
+
+  setTimeout(checkForUpdates, 5000);
 };
