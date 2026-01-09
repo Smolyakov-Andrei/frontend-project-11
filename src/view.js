@@ -21,11 +21,13 @@ const renderForm = (elements, state) => {
     submitButton.disabled = false
     input.removeAttribute('readonly')
   }
+
   if (state.rssForm.status === 'error') {
     input.classList.add('is-invalid')
   } else {
     input.classList.remove('is-invalid')
   }
+
   if (state.rssForm.status === 'success') {
     input.value = ''
     input.focus()
@@ -36,7 +38,7 @@ const renderFeeds = (elements, feeds) => {
   const { feedsContainer } = elements
   const list = feedsContainer.querySelector('ul')
   list.innerHTML = ''
-  feeds.forEach(feed => {
+  feeds.forEach((feed) => {
     const li = document.createElement('li')
     li.classList.add('list-group-item', 'border-0', 'border-end-0')
     const h3 = document.createElement('h3')
@@ -52,10 +54,10 @@ const renderFeeds = (elements, feeds) => {
 
 const renderModal = (elements, state) => {
   const { modalTitle, modalBody, modalReadButton } = elements
-  const postId = state.ui.modalPostId
-  if (!postId) return
+  const { modalPostId } = state.ui
+  if (!modalPostId) return
 
-  const post = state.posts.find(p => p.id === postId)
+  const post = state.posts.find((p) => p.id === modalPostId)
   if (!post) return
 
   modalTitle.textContent = post.title
@@ -69,10 +71,9 @@ const renderPosts = (elements, state, i18nInstance) => {
   const list = postsContainer.querySelector('ul')
   list.innerHTML = ''
 
-  posts.forEach(post => {
+  posts.forEach((post) => {
     const li = document.createElement('li')
     li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0')
-
     const a = document.createElement('a')
     a.setAttribute('href', post.link)
     const isViewed = viewedPostIds.has(post.id)
