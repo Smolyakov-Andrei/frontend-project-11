@@ -60,7 +60,7 @@ export default () => {
     return schema.validate(url)
   }
 
-  const loadRss = (url) => {
+  const loadRss = url => {
     const proxyUrl = getProxyUrl(url)
     return axios.get(proxyUrl).then(response => parse(response.data.contents))
   }
