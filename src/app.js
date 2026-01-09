@@ -106,10 +106,10 @@ export default () => {
       .catch((err) => {
         if (err.isAxiosError) {
           watchedState.rssForm.error = 'errors.networkError'
-        } 
+        }
         else if (err.isParseError) {
           watchedState.rssForm.error = 'errors.parseError'
-        } 
+        }
         else {
           watchedState.rssForm.error = err.message || 'errors.unknown'
         }
