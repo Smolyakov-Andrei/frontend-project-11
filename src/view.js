@@ -36,7 +36,7 @@ const renderFeeds = (elements, feeds) => {
   const { feedsContainer } = elements
   const list = feedsContainer.querySelector('ul')
   list.innerHTML = ''
-  feeds.forEach(feed => {
+  feeds.forEach((feed) => {
     const li = document.createElement('li')
     li.classList.add('list-group-item', 'border-0', 'border-end-0')
     const h3 = document.createElement('h3')
@@ -55,7 +55,7 @@ const renderModal = (elements, state) => {
   const postId = state.ui.modalPostId
   if (!postId) return
 
-  const post = state.posts.find(p => p.id === postId)
+  const post = state.posts.find((p) => p.id === postId)
   if (!post) return
 
   modalTitle.textContent = post.title
@@ -69,7 +69,7 @@ const renderPosts = (elements, state, i18nInstance) => {
   const list = postsContainer.querySelector('ul')
   list.innerHTML = ''
 
-  posts.forEach(post => {
+  posts.forEach((post) => {
     const li = document.createElement('li')
     li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0')
 
