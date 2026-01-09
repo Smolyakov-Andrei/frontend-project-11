@@ -1,15 +1,17 @@
 const renderFeedback = (elements, i18nInstance, state) => {
   const { feedback } = elements
   feedback.classList.remove('text-success', 'text-danger')
-  if (state.rssForm.status === 'error') {
-    feedback.classList.add('text-danger')
-    feedback.textContent = i18nInstance.t(state.rssForm.error)
-  } else if (state.rssForm.status === 'success') {
-    feedback.classList.add('text-success')
-    feedback.textContent = i18nInstance.t('success')
-  } else {
-    feedback.textContent = ''
-  }
+ if (state.rssForm.status === 'error') {
+  feedback.classList.add('text-danger')
+  feedback.textContent = i18nInstance.t(state.rssForm.error)
+}
+else if (state.rssForm.status === 'success') {
+  feedback.classList.add('text-success')
+  feedback.textContent = i18nInstance.t('success')
+}
+else {
+  feedback.textContent = ''
+}
 }
 
 const renderForm = (elements, state) => {
@@ -17,14 +19,16 @@ const renderForm = (elements, state) => {
   if (state.rssForm.status === 'sending') {
     submitButton.disabled = true
     input.setAttribute('readonly', true)
-  } else {
+  } 
+  else {
     submitButton.disabled = false
     input.removeAttribute('readonly')
   }
 
   if (state.rssForm.status === 'error') {
     input.classList.add('is-invalid')
-  } else {
+  } 
+  else {
     input.classList.remove('is-invalid')
   }
 
@@ -38,7 +42,7 @@ const renderFeeds = (elements, feeds) => {
   const { feedsContainer } = elements
   const list = feedsContainer.querySelector('ul')
   list.innerHTML = ''
-  feeds.forEach(feed => {
+  feeds.forEach((feed) => {
     const li = document.createElement('li')
     li.classList.add('list-group-item', 'border-0', 'border-end-0')
     const h3 = document.createElement('h3')
@@ -71,7 +75,7 @@ const renderPosts = (elements, state, i18nInstance) => {
   const list = postsContainer.querySelector('ul')
   list.innerHTML = ''
 
-  posts.forEach(post => {
+  posts.forEach((post) => {
     const li = document.createElement('li')
     li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0')
     const a = document.createElement('a')

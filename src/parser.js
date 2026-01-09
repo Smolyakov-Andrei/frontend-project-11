@@ -1,4 +1,4 @@
-export default xmlString => {
+export default (xmlString) => {
   const parser = new DOMParser()
   const doc = parser.parseFromString(xmlString, 'application/xml')
 
@@ -16,7 +16,7 @@ export default xmlString => {
 
   const posts = []
   const items = rssElement.querySelectorAll('item')
-  items.forEach(item => {
+  items.forEach((item) => {
     posts.push({
       title: item.querySelector('title').textContent,
       link: item.querySelector('link').textContent,

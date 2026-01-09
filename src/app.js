@@ -60,18 +60,18 @@ export default () => {
     return schema.validate(url)
   }
 
-  const loadRss = url => {
+  const loadRss = (url) => {
     const proxyUrl = getProxyUrl(url)
     return axios.get(proxyUrl).then(response => parse(response.data.contents))
   }
 
   const checkForUpdates = () => {
-    const promises = state.feeds.map(feed => loadRss(feed.url)
+    const promises = state.feeds.map((feed) => loadRss(feed.url)
       .then(({ posts }) => {
         const existingPostTitles = new Set(state.posts.map(p => p.title))
         const newPosts = posts.filter(p => !existingPostTitles.has(p.title))
         if (newPosts.length > 0) {
-          const postsWithIds = newPosts.map(post => ({
+          const postsWithIds = newPosts.map((post) => ({
             id: crypto.randomUUID(),
             feedId: feed.id,
             ...post,
@@ -94,7 +94,7 @@ export default () => {
     const url = formData.get('url').trim()
     watchedState.rssForm.status = 'sending'
 
-    validateUrl(url, state.feeds.map(feed => feed.url))
+    validateUrl(url, state.feeds.map((feed) => feed.url))
       .then(() => loadRss(url))
       .then(({ feed, posts }) => {
         const feedId = crypto.randomUUID()
@@ -103,7 +103,7 @@ export default () => {
         watchedState.posts.unshift(...postsWithIds)
         watchedState.rssForm.status = 'success'
       })
-      .catch(err => {
+      .catch((err) => {
         if (err.isAxiosError) {
           watchedState.rssForm.error = 'errors.networkError'
         } else if (err.isParseError) {
