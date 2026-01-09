@@ -62,16 +62,16 @@ export default () => {
 
   const loadRss = (url) => {
     const proxyUrl = getProxyUrl(url)
-    return axios.get(proxyUrl).then((response) => parse(response.data.contents))
+    return axios.get(proxyUrl).then(response => parse(response.data.contents))
   }
 
   const checkForUpdates = () => {
-    const promises = state.feeds.map((feed) => loadRss(feed.url)
+    const promises = state.feeds.map(feed => loadRss(feed.url)
       .then(({ posts }) => {
-        const existingPostTitles = new Set(state.posts.map((p) => p.title))
-        const newPosts = posts.filter((p) => !existingPostTitles.has(p.title))
+        const existingPostTitles = new Set(state.posts.map(p => p.title))
+        const newPosts = posts.filter(p => !existingPostTitles.has(p.title))
         if (newPosts.length > 0) {
-          const postsWithIds = newPosts.map((post) => ({
+          const postsWithIds = newPosts.map(post => ({
             id: crypto.randomUUID(),
             feedId: feed.id,
             ...post,
@@ -94,21 +94,23 @@ export default () => {
     const url = formData.get('url').trim()
     watchedState.rssForm.status = 'sending'
 
-    validateUrl(url, state.feeds.map((feed) => feed.url))
+    validateUrl(url, state.feeds.map(feed => feed.url))
       .then(() => loadRss(url))
       .then(({ feed, posts }) => {
         const feedId = crypto.randomUUID()
         watchedState.feeds.unshift({ id: feedId, url, ...feed })
-        const postsWithIds = posts.map((post) => ({ id: crypto.randomUUID(), feedId, ...post }))
+        const postsWithIds = posts.map(post => ({ id: crypto.randomUUID(), feedId, ...post }))
         watchedState.posts.unshift(...postsWithIds)
         watchedState.rssForm.status = 'success'
       })
       .catch((err) => {
         if (err.isAxiosError) {
           watchedState.rssForm.error = 'errors.networkError'
-        } else if (err.isParseError) {
+        } 
+        else if (err.isParseError) {
           watchedState.rssForm.error = 'errors.parseError'
-        } else {
+        } 
+        else {
           watchedState.rssForm.error = err.message || 'errors.unknown'
         }
         watchedState.rssForm.status = 'error'

@@ -4,10 +4,12 @@ const renderFeedback = (elements, i18nInstance, state) => {
   if (state.rssForm.status === 'error') {
     feedback.classList.add('text-danger')
     feedback.textContent = i18nInstance.t(state.rssForm.error)
-  } else if (state.rssForm.status === 'success') {
+  } 
+  else if (state.rssForm.status === 'success') {
     feedback.classList.add('text-success')
     feedback.textContent = i18nInstance.t('success')
-  } else {
+  } 
+  else {
     feedback.textContent = ''
   }
 }
@@ -17,14 +19,16 @@ const renderForm = (elements, state) => {
   if (state.rssForm.status === 'sending') {
     submitButton.disabled = true
     input.setAttribute('readonly', true)
-  } else {
+  } 
+  else {
     submitButton.disabled = false
     input.removeAttribute('readonly')
   }
 
   if (state.rssForm.status === 'error') {
     input.classList.add('is-invalid')
-  } else {
+  } 
+  else {
     input.classList.remove('is-invalid')
   }
 
@@ -57,7 +61,7 @@ const renderModal = (elements, state) => {
   const { modalPostId } = state.ui
   if (!modalPostId) return
 
-  const post = state.posts.find((p) => p.id === modalPostId)
+  const post = state.posts.find(p => p.id === modalPostId)
   if (!post) return
 
   modalTitle.textContent = post.title
